@@ -37,7 +37,7 @@ class DroneBase(DronePart):
             filename=path_resources + "/drone_v2.png",
             sprite_front_is_up=True,
             shape_approximation="hull",
-            # radius=15,
+            # radius=20,
             **kwargs,
         )
 
