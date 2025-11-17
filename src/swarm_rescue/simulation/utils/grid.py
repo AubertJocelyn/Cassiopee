@@ -172,7 +172,7 @@ class Grid:
             self.grid[x_px, y_px] += val
 
     def display(self, grid_to_display: np.ndarray,
-                robot_pose: Pose, title: str = "grid", grid_customisable: np.ndarray = None):
+                robot_pose: Pose, title: str = "grid"):
         """
                 Screen display of grid and robot pose,
                 using opencv (faster than the matplotlib version).
@@ -182,23 +182,12 @@ class Grid:
                     robot_pose (Pose): Robot pose.
                     title (str): Window title.
                 """
-        if grid_customisable is None:
-            grid_customisable=np.zeros((len(grid_to_display), len(grid_to_display[0])))
 
         img = grid_to_display.T
         img = img - img.min()
         img = img / img.max() * 255
         img = np.uint8(img)
         img_color = cv2.applyColorMap(src=img, colormap=cv2.COLORMAP_JET)
-
-        ###Ajout Chat Gpt
-        # Création d’un masque blanc
-        # -> valeurs non nulles dans grid_white = zone blanche
-        mask = (grid_customisable.T != 0)
-
-        # Application des zones blanches
-        img_color[mask] = [255, 255, 255]
-        ###
 
         pt2_x = robot_pose.position[0] + np.cos(robot_pose.orientation) * 20
         pt2_y = robot_pose.position[1] + np.sin(robot_pose.orientation) * 20

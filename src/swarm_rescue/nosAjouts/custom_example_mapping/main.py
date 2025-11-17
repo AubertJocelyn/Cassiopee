@@ -68,8 +68,8 @@ class MyDroneMapping(DroneAbstract):
         #                            self.true_angle())
 
         self.grid.update_grid(pose=self.estimated_pose)
-        if self.iteration % 5 == 0:
-            self.grid.print_grid()
+        if self.iteration % 30 == 0:
+            self.grid.print_grid(self.estimated_pose)
             # pass
 
         return command

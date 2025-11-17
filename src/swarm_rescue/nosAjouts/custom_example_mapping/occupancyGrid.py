@@ -4,6 +4,7 @@ from typing import Type
 
 import cv2
 import numpy as np
+from typing_extensions import override
 
 # Insert the 'src' directory, located two levels up from the current script,
 # into sys.path. This ensures Python can find project-specific modules
@@ -92,23 +93,59 @@ class OccupancyGrid(Grid):
         self.add_points(pose.position[0], pose.position[1], FREE_ZONE_VALUE)
 
         # threshold values
-        self.grid = np.clip(self.grid, THRESHOLD_MIN, THRESHOLD_MAX)
+        self.grid = self.clip_grid(self.grid, THRESHOLD_MIN, THRESHOLD_MAX)
+        self.zoomed_grid = self.get_zoomed_grid(self.grid)
 
-        # compute zoomed grid for displaying
-        self.zoomed_grid = self.grid.copy()
+    @staticmethod
+    def clip_grid(grid, a, d, b = -1, c = 1):
+        grid1 = np.clip(grid, a, b)
+        grid2 = np.clip(grid, c, d)
+        return grid1 + grid2
+
+    # compute zoomed grid for displaying
+    def get_zoomed_grid(self, grid):
+        zoomed_grid = grid.copy()
         new_zoomed_size = (int(self.size_area_world[1] * 0.5),
                            int(self.size_area_world[0] * 0.5))
-        self.zoomed_grid = cv2.resize(self.zoomed_grid, new_zoomed_size,
+        zoomed_grid = cv2.resize(zoomed_grid, new_zoomed_size,
                                       interpolation=cv2.INTER_NEAREST)
+        return zoomed_grid
 
-    def get_grid(self):
+    def get_grid_map(self):
         return self.grid
 
-    def print_grid(self):
-        DEFAULT_POS = Pose()
+    def get_grid_drone(self, robot_pose: Pose):
+        radius_drone = 15
+        x_drone = robot_pose.position[0]
+        y_drone = robot_pose.position[1]
+        grid = np.zeros((self.x_max_grid, self.y_max_grid))
+        for i in range(2*radius_drone):
+            for j in range(2 * radius_drone):
+                pt1_x, pt1_y = (self._conv_world_to_grid(x_drone + i,y_drone + j))
+                grid[int(pt1_x)][int(pt1_y)] = 1.0
+        return grid
+
+
+    def get_grid_drone_zoomed(self, robot_pose: Pose):
+        return self.get_zoomed_grid(self.get_grid_drone(robot_pose))
+
+    def print_grid(self, robot_pose: Pose):
         self.display(self.grid,
-                          DEFAULT_POS,
+                          self.get_grid_drone(robot_pose),
                           title="occupancy grid")
-        self.display(self.zoomed_grid,
-                          DEFAULT_POS,
+        self.display(self.zoomed_grid, self.get_grid_drone_zoomed(robot_pose),
                           title="zoomed occupancy grid")
+    @override
+    def display(self, grid_to_display: np.ndarray, grid_customisable: np.ndarray = None, title: str = "grid"):
+        img = grid_to_display.T
+        img = img - img.min()
+        img = img / img.max() * 255
+        img = np.uint8(img)
+        img_color = cv2.applyColorMap(src=img, colormap=cv2.COLORMAP_JET)
+
+        ###ajout chat GPT pour afficher le drone de manière consistante
+        mask = (grid_customisable.T != 0)
+        img_color[mask] = [255, 255, 255]
+
+        cv2.imshow(title, img_color)
+        cv2.waitKey(1)
