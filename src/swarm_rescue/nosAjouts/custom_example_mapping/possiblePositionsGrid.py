@@ -23,7 +23,7 @@ class PossiblePositionsGrid(Grid):
 
     def update(self, map_grid, **kwargs):
         self.map_grid = map_grid
-        self.grid_auxiliaire = np.zeros_like(map_grid)
+        self.grid_auxiliaire = np.zeros_like(map_grid, dtype=np.int8)
         self.grid = np.zeros_like(map_grid, dtype=np.int8)
         self.set_grid_auxiliaire()
         self.set_grid_positions()
