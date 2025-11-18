@@ -1,4 +1,5 @@
 import math
+from copy import copy
 
 import cv2
 import numpy as np
@@ -28,7 +29,6 @@ class Grid:
             int(self.size_area_world[1] / self.resolution + 0.5))
 
         self.grid = np.zeros((self.x_max_grid, self.y_max_grid))
-
     def _conv_world_to_grid(self, x_world, y_world):
         """
         Convert from world coordinates to map coordinates (i.e. cell index in
@@ -203,3 +203,28 @@ class Grid:
                         color=(0, 0, 255), thickness=2)
         cv2.imshow(title, img_color)
         cv2.waitKey(1)
+
+    # compute zoomed grid for displaying
+    def zoomed(self):
+        zoomed_grid = (int(self.size_area_world[1] * 0.5),
+                           int(self.size_area_world[0] * 0.5))
+        zoomed_grid = cv2.resize(self.grid.copy(), zoomed_grid,
+                                 interpolation=cv2.INTER_NEAREST)
+        return zoomed_grid
+
+    def clipped(self, a, b):
+        return np.clip(self.grid, a, b)
+
+    def __getitem__(self, key):
+        return self.grid[key]
+
+    def __setitem__(self, key, value):
+        self.grid[key] = value
+
+    def show(self):
+        return self.grid
+
+def truncate(grid, a, b):
+    grid_troncated = copy(grid)
+    grid_troncated[(grid_troncated > a) & (grid_troncated < b)] = 0
+    return grid_troncated

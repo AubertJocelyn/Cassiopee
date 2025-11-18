@@ -13,6 +13,7 @@ import numpy as np
 from imageio.v2 import sizes
 
 from occupancyGrid import OccupancyGrid
+from swarm_rescue.nosAjouts.custom_example_mapping.printer import Printer
 
 # Insert the 'src' directory, located two levels up from the current script,
 # into sys.path. This ensures Python can find project-specific modules
@@ -34,15 +35,11 @@ from swarm_rescue.simulation.gui_map.map_abstract import MapAbstract
 class MyDroneMapping(DroneAbstract):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
-        self.iteration: int = 0
-
-        self.estimated_pose = Pose()
-
         resolution = 8
-        self.grid = OccupancyGrid(size_area_world=self.size_area,
-                                  resolution=resolution,
-                                  lidar=self.lidar())
+        size_area_world = self.size_area
+        self.printer = Printer(lidar = self.lidar(), resolution=resolution, size_area_world=self.size_area)
+        self.iteration: int = 0
+        self.estimated_pose = Pose()
 
     def define_message_for_all(self):
         """
@@ -67,10 +64,9 @@ class MyDroneMapping(DroneAbstract):
         # self.estimated_pose = Pose(np.asarray(self.true_position()),
         #                            self.true_angle())
 
-        self.grid.update_grid(pose=self.estimated_pose)
+        self.printer.update(robot_pose=self.estimated_pose)
         if self.iteration % 30 == 0:
-            self.grid.print_grid(self.estimated_pose)
-            # pass
+            self.printer.show()
 
         return command
 
