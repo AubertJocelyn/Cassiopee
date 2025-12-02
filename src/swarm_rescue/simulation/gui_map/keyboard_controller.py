@@ -38,16 +38,16 @@ class KeyboardController:
             elif key == arcade.key.DOWN:
                 self._command["forward"] = -1.0
 
-            if not modifiers & arcade.key.MOD_SHIFT:
+            """if not modifiers & arcade.key.MOD_SHIFT:
                 if key == arcade.key.LEFT:
                     self._command["rotation"] = 1.0
                 elif key == arcade.key.RIGHT:
                     self._command["rotation"] = -1.0
-            else:
-                if key == arcade.key.LEFT:
-                    self._command["lateral"] = 1.0
-                elif key == arcade.key.RIGHT:
-                    self._command["lateral"] = -1.0
+            else:"""
+            if key == arcade.key.LEFT:
+                self._command["lateral"] = 1.0
+            elif key == arcade.key.RIGHT:
+                self._command["lateral"] = -1.0
 
             if key == arcade.key.W:
                 self._command["grasper"] = 1

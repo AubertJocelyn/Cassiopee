@@ -16,7 +16,7 @@ class PossiblePositionsGrid(Grid):
                  resolution: float):
         super().__init__(size_area_world=size_area_world,
                          resolution=resolution)
-
+        self.grid = np.zeros((self.x_max_grid, self.y_max_grid), dtype=np.int8)
         self.empty_zone_length = self.get_empty_zone_length(resolution)
         self.offset_center_square = self.get_offset_center_square(resolution)
 
@@ -35,7 +35,7 @@ class PossiblePositionsGrid(Grid):
 
     @staticmethod
     def get_empty_zone_length(resolution):
-        DRONE_RADIUS = 15
+        DRONE_RADIUS = 9
         return 1 + 2 * (1 + math.floor(DRONE_RADIUS / resolution - 1 / 2))
 
     @staticmethod

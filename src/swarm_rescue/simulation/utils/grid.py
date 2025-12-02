@@ -42,8 +42,13 @@ class Grid:
             Tuple of grid indices.
         """
 
+
         x_grid = (x_world + self.size_area_world[0] / 2) / self.resolution
         y_grid = (-y_world + self.size_area_world[1] / 2) / self.resolution
+
+        ###!!! added so the result can't be out of the grid !!!###
+        x_grid = np.clip(x_grid, 0, self.x_max_grid - 1)
+        y_grid = np.clip(y_grid, 0, self.y_max_grid - 1)
 
         if isinstance(x_grid, float):
             x_grid = int(x_grid)
@@ -83,15 +88,21 @@ class Grid:
 
     def add_value_along_line(self, x_0: float, y_0: float, x_1: float,
                              y_1: float, val):
-        """
-        Add a value to a line of points using Bresenham algorithm, input in
-        world coordinates.
+        points = self.Bresenham(x_0, y_0, x_1, y_1)
+        # add value to the points
+        self.grid[points[0], points[1]] += val
 
-        Args:
-            x_0, y_0: Starting point coordinates in m.
-            x_1, y_1: End point coordinates in m.
-            val: Value to add to each cell of the line.
+    def Bresenham(self, x_0: float, y_0: float, x_1: float,
+                             y_1: float):
         """
+                Add a value to a line of points using Bresenham algorithm, input in
+                world coordinates.
+
+                Args:
+                    x_0, y_0: Starting point coordinates in m.
+                    x_1, y_1: End point coordinates in m.
+                    val: Value to add to each cell of the line.
+                """
 
         if (math.isnan(x_0) or
                 math.isnan(y_0) or
@@ -143,9 +154,7 @@ class Grid:
                 y += y_step
                 error += dx
         points = np.array(points).T
-
-        # add value to the points
-        self.grid[points[0], points[1]] += val
+        return points
 
     def add_points(self, points_x, points_y, val):
         """
