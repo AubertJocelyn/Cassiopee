@@ -1,19 +1,16 @@
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
-from matplotlib.colors import ListedColormap
 
-from swarm_rescue.nosAjouts.custom_example_mapping.closestUnexploredGrid import ClosestUnexploredGird
-from swarm_rescue.nosAjouts.custom_example_mapping.droneGrid import DroneGrid
-from swarm_rescue.nosAjouts.custom_example_mapping.impossiblePositionsGrid import ImpossiblePositionsGrid
-from swarm_rescue.nosAjouts.custom_example_mapping.pathFinderGrid import PathFinderGrid
-from swarm_rescue.nosAjouts.custom_example_mapping.possiblePositionsGrid import PossiblePositionsGrid
-from swarm_rescue.simulation.utils.grid import truncate
-from swarm_rescue.nosAjouts.custom_example_mapping.occupancyGrid import OccupancyGrid
+from swarm_rescue.nosAjouts.Dev.custom_example_mapping.closestUnexploredGrid import ClosestUnexploredGird
+from swarm_rescue.nosAjouts.Dev.custom_example_mapping.droneGrid import DroneGrid
+from swarm_rescue.nosAjouts.Dev.custom_example_mapping.impossiblePositionsGrid import ImpossiblePositionsGrid
+from swarm_rescue.nosAjouts.Dev.custom_example_mapping.pathFinderGrid import PathFinderGrid
+from swarm_rescue.nosAjouts.Dev.custom_example_mapping.possiblePositionsGrid import PossiblePositionsGrid
+from swarm_rescue.nosAjouts.Dev.custom_example_mapping.occupancyGrid import OccupancyGrid
 from swarm_rescue.simulation.utils.pose import Pose
 
 
-class Printer:
+class Printer_:
     dico_grids: dict
     def __init__(self, **kwargs):
         self.dico_grids = {}
@@ -45,6 +42,7 @@ class Printer:
                                         printed_point = printed_point, **kwargs)
 
     def show(self):
+        return
         """self.display(truncate(self.dico_grids["OccupancyGrid"].zoomed(), -20, 20),
                      title="zoomed occupany grid troncated")"""
         self.display(self.dico_grids["OccupancyGrid"].zoomed(),

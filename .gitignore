@@ -66,6 +66,7 @@ cover/*
 MANIFEST
 
 # Per-project virtualenvs
-.venv*/
-.conda*/
-.python-version
+venv*/
+conda*/
+python-version"""
+/venvswarm/*

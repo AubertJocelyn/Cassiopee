@@ -20,7 +20,7 @@ class KeyboardController:
         self._command: CommandsDict = {"forward": 0.0,
                                        "lateral": 0.0,
                                        "rotation": 0.0,
-                                       "grasper": 0}
+                                       "grasper": 1}
 
     def on_key_press(self, key: int, modifiers: int) -> None:
         """
@@ -45,9 +45,9 @@ class KeyboardController:
                     self._command["rotation"] = -1.0
             else:"""
             if key == arcade.key.LEFT:
-                self._command["lateral"] = 1.0
+                self._command["rotation"] = 1.0
             elif key == arcade.key.RIGHT:
-                self._command["lateral"] = -1.0
+                self._command["rotation"] = -1.0
 
             if key == arcade.key.W:
                 self._command["grasper"] = 1

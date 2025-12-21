@@ -17,11 +17,6 @@ class ImpossiblePositionsGrid(Grid):
                          resolution=resolution)
         self.drone_radius_on_grid = self.get_drone_radius_on_grid(resolution)
 
-    @staticmethod
-    def get_drone_radius_on_grid(resolution):
-        DRONE_RADIUS = 1*15
-        return 1 + math.floor(DRONE_RADIUS / resolution - 1 / 2)
-
     def update(self, map_grid, **kwargs):
         ###code originel optimisé par chatGPT
         self.map_grid = map_grid
@@ -47,3 +42,8 @@ class ImpossiblePositionsGrid(Grid):
     def get_full_cell_grid(grid) -> bool:
         VALUE_FULL = 2.0
         return grid > VALUE_FULL
+
+    @staticmethod
+    def get_drone_radius_on_grid(resolution):
+        DRONE_RADIUS = 1 * 15
+        return 1 + math.floor(DRONE_RADIUS / resolution - 1 / 2)

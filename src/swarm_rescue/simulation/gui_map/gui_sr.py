@@ -19,7 +19,7 @@ from swarm_rescue.simulation.utils.mouse_measure import MouseMeasure
 from swarm_rescue.simulation.utils.visu_noises import VisuNoises
 from swarm_rescue.simulation.utils.window_utils import auto_resize_window
 
-
+VITESSExX = 10.0
 class GuiSR(TopDownView):
     """
     The GuiSR class is a subclass of TopDownView and provides a graphical user
@@ -149,7 +149,7 @@ class GuiSR(TopDownView):
         self._playground.window.on_mouse_motion = self.on_mouse_motion
         self._playground.window.on_mouse_press = self.on_mouse_press
         self._playground.window.on_mouse_release = self.on_mouse_release
-        self._playground.window.set_update_rate(FRAME_RATE)
+        self._playground.window.set_update_rate(FRAME_RATE/VITESSExX)
         # self._playground.window.set_location(4500, 0)
 
         self._the_map = the_map

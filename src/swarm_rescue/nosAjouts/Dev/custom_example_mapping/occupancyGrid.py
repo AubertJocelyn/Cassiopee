@@ -1,14 +1,7 @@
 import pathlib
 import sys
-from copy import copy
-from typing import Type
 
-import cv2
 import numpy as np
-from typing_extensions import override
-
-from swarm_rescue.nosAjouts.custom_example_mapping.pathFinderGrid import PathFinderGrid
-from swarm_rescue.nosAjouts.custom_example_mapping.possiblePositionsGrid import PossiblePositionsGrid
 
 # Insert the 'src' directory, located two levels up from the current script,
 # into sys.path. This ensures Python can find project-specific modules
@@ -17,7 +10,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "src"))
 
 from swarm_rescue.simulation.utils.constants import MAX_RANGE_LIDAR_SENSOR
 from swarm_rescue.simulation.utils.grid import Grid
-from swarm_rescue.simulation.utils.pose import Pose
+
 
 class OccupancyGrid(Grid):
     """Simple occupancy grid"""

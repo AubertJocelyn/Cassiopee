@@ -4,7 +4,7 @@ import numpy as np
 class ForceCalculator:
     def __init__(self, lidar):
         self.lidar = lidar
-    def get_consigne(self, robot_pose, goal_world):
+    def get_consigne(self, robot_pose, goal_world, vx=None, vy=None):
         MAX_DISTANCE = 40.0
         MIN_DISTANCE = 5.0
         K_REPULSIVE = 0.1
@@ -21,6 +21,7 @@ class ForceCalculator:
             if lidar_dist[i] > MAX_DISTANCE:
                 continue
             else:
+                max(lidar_dist[i], 1)
                 F = K_REPULSIVE * (1 / lidar_dist[i] - MIN_DISTANCE)**2
                 Fx = F * cos_rays[i]
                 Fy = F * sin_rays[i]

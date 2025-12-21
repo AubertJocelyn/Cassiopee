@@ -6,16 +6,12 @@ keyboard
 
 import pathlib
 import sys
-from operator import index
 from typing import Type
 
-import cv2
 import numpy as np
-from imageio.v2 import sizes
 
-from occupancyGrid import OccupancyGrid
-from swarm_rescue.nosAjouts.ChampPotentiel.ForceCalculator import ForceCalculator
-from swarm_rescue.nosAjouts.custom_example_mapping.printer import Printer
+from swarm_rescue.nosAjouts.Dev.ChampPotentiel.ForceCalculator import ForceCalculator
+from swarm_rescue.nosAjouts.Dev.custom_example_mapping.printer import Printer
 
 # Insert the 'src' directory, located two levels up from the current script,
 # into sys.path. This ensures Python can find project-specific modules
@@ -25,7 +21,6 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / "src"))
 from swarm_rescue.simulation.drone.controller import CommandsDict
 from swarm_rescue.maps.walls_medium_02 import add_walls, add_boxes
 from swarm_rescue.simulation.utils.constants import MAX_RANGE_LIDAR_SENSOR
-from swarm_rescue.simulation.utils.grid import Grid
 from swarm_rescue.simulation.utils.misc_data import MiscData
 from swarm_rescue.simulation.utils.pose import Pose
 from swarm_rescue.simulation.drone.drone_abstract import DroneAbstract
@@ -39,7 +34,7 @@ class MyDroneMapping(DroneAbstract):
         super().__init__(**kwargs)
         resolution = 8
         size_area_world = self.size_area
-        self.printer = Printer(lidar = self.lidar(), resolution=resolution, size_area_world=self.size_area)
+        self.printer_ = Printer(lidar = self.lidar(), resolution=resolution, size_area_world=self.size_area)
         self.iteration: int = 0
         self.estimated_pose = Pose()
         self.force_calculator = ForceCalculator(self.lidar())
@@ -62,12 +57,12 @@ class MyDroneMapping(DroneAbstract):
         # self.estimated_pose = Pose(np.asarray(self.true_position()),
         #                            self.true_angle())
 
-        self.printer.update(robot_pose=self.estimated_pose)
+        self.printer_.update(robot_pose=self.estimated_pose)
         angle_cons = self.get_further_angle(self.lidar())
         if self.iteration % 30 == 0:
-            self.printer.show()
+            self.printer_.show()
 
-        command = self.force_calculator.get_consigne(self.estimated_pose, self.printer.get_goal_world())
+        command = self.force_calculator.get_consigne(self.estimated_pose, self.printer_.get_goal_world())
         print("command", command)
         return command
 
