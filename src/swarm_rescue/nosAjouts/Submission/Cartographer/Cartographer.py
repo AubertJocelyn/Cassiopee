@@ -2,7 +2,6 @@ from swarm_rescue.nosAjouts.Submission.Cartographer.Grids.FreeSquaresGrid import
 from swarm_rescue.nosAjouts.Submission.Cartographer.Grids.FreeZonesGrid import FreeZonesGrid
 from swarm_rescue.nosAjouts.Submission.Cartographer.Grids.ObstructuredZonesGrid import ObstructuredZonesGrid
 from swarm_rescue.nosAjouts.Submission.Cartographer.Grids.RawMappingGrid import RawMappingGrid
-from swarm_rescue.nosAjouts.Submission.Cartographer.Grids.RescueCenterSurroundingsGrid import RescueCenterGrid
 from swarm_rescue.nosAjouts.Submission.Cartographer.Grids.StateGrid import StateGrid
 
 
@@ -12,7 +11,6 @@ class Cartographer:
     freeZonesGrid: FreeZonesGrid
     obstructuredZonesGrid: ObstructuredZonesGrid
     stateGrid: StateGrid
-    rescueCenterGrid: RescueCenterGrid
     counter:int
 
     def __init__(self, self_area_world, resolution):

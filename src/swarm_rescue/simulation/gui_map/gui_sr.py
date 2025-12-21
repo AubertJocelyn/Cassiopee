@@ -437,7 +437,8 @@ class GuiSR(TopDownView):
             self._draw_com = not self._draw_com
 
         if key == arcade.key.P:
-            self._draw_gps = not self._draw_gps
+            print(input())
+            #self._draw_gps = not self._draw_gps
 
         if key == arcade.key.L:
             self._draw_lidar_rays = not self._draw_lidar_rays
