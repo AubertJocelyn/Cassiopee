@@ -1,5 +1,4 @@
 import numpy as np
-from shiboken6 import Object
 
 from swarm_rescue.nosAjouts.Submission.Rescue.RescueAbilitiesMixin import RescueAbilitiesMixin
 from swarm_rescue.nosAjouts.Submission.Rescue.RescueAnalyzer import RescueAnalyzer
